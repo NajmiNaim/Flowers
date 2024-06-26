@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator with a Message</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #00b4db, #0083b0);
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .calculator {
+            margin-bottom: 20px;
+        }
+
+        #result {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.5em;
+            text-align: right;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.2em;
+            background-color: #00897b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #005d56;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #00796b;
+        }
+
+        .flowers {
+            display: none;
+            width: 100px;
+            height: 100px;
+            background: url('https://i.imgur.com/HvymfEJ.png') no-repeat center center;
+            background-size: cover;
+            margin: 0 auto;
+        }
+
+        .flowers.show {
+            display: block;
+            animation: bloom 1.5s ease-in-out infinite;
+        }
+
+        @keyframes bloom {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .back-to-top {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: white;
+            background-color: #00897b;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .back-to-top.show {
+            display: block;
+        }
+
+        .filler-content {
+            height: 1500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="calculator">
+            <input type="text" id="result" readonly>
+            <div class="buttons">
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button onclick="appendOperator('+')">+</button>
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button onclick="appendOperator('-')">-</button>
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button onclick="appendOperator('*')">*</button>
+                <button onclick="appendNumber('0')">0</button>
+                <button onclick="appendOperator('/')">/</button>
+                <button onclick="appendOperator('**')">^</button>
+                <button onclick="calculateSquareRoot()">√</button>
+                <button onclick="calculateTrig('sin')">sin</button>
+                <button onclick="calculateTrig('cos')">cos</button>
+                <button onclick="calculateTrig('tan')">tan</button>
+                <button onclick="clearResult()">C</button>
+                <button onclick="calculateResult()">=</button>
+            </div>
+            <p id="message"></p>
+            <div class="flowers"></div>
+        </div>
+    </div>
+    <button class="back-to-top" id="back-to-top" onclick="scrollToTop()">Back to Top</button>
+    <div class="filler-content"></div>
+    <script>
+        function appendNumber(number) {
+            const result = document.getElementById('result');
+            result.value += number;
+        }
+
+        function appendOperator(operator) {
+            const result = document.getElementById('result');
+            result.value += ' ' + operator + ' ';
+        }
+
+        function clearResult() {
+            const result = document.getElementById('result');
+            result.value = '';
+            const message = document.getElementById('message');
+            message.textContent = '';
+            const flowers = document.querySelector('.flowers');
+            flowers.classList.remove('show');
+            const backToTop = document.getElementById('back-to-top');
+            backToTop.classList.remove('show');
+        }
+
+        function calculateSquareRoot() {
+            const result = document.getElementById('result');
+            result.value = Math.sqrt(eval(result.value.replace(/\s+/g, '')));
+        }
+
+        function calculateTrig(func) {
+            const result = document.getElementById('result');
+            const value = eval(result.value.replace(/\s+/g, ''));
+            switch (func) {
+                case 'sin':
+                    result.value = Math.sin(value);
+                    break;
+                case 'cos':
+                    result.value = Math.cos(value);
+                    break;
+                case 'tan':
+                    result.value = Math.tan(value);
+                    break;
+            }
+        }
+
+        function calculateResult() {
+            const result = document.getElementById('result');
+            const message = document.getElementById('message');
+            const flowers = document.querySelector('.flowers');
+            const backToTop = document.getElementById('back-to-top');
+            try {
+                // Check if the specific expression "1+4+3" is entered
+                if (result.value.replace(/\s+/g, '') === '1+4+3') {
+                    message.innerHTML = `
+                        Hi Nur Najmin,<br><br>
+                        I've been wanting to tell you something for a while now. Every time we meet, I can't find the courage to say it. So, I made this website just to share this with you.<br><br>
+                        From the first day we met, I've had a crush on you, even though I didn't know your name back then. My feelings for you have only grown stronger.<br><br>
+                        I'm not asking for anything in return; I just needed to let you know how I feel. Even if you don't feel the same, I hope we can remain friends, as we always have been.<br><br>
+                        By the way, did you hear about the mathematician who’s afraid of negative numbers? He’ll stop at nothing to avoid them! 😄<br><br>
+                        You're very special to me, and I wanted you to know that.<br><br>
+                        Please read this message carefully. Once you are done, enter the sequence <strong>2+3+2+4</strong> to see a special surprise!
+                    `;
+                    backToTop.classList.add('show');
+                } else if (result.value.replace(/\s+/g, '') === '2+3+2+4') {
+                    flowers.classList.add('show');
+                } else {
+                    result.value = eval(result.value.replace(/\s+/g, ''));
+                }
+            } catch {
+                result.value = 'Error';
+            }
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
